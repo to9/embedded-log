@@ -14,6 +14,39 @@
 
 <div align=left><img width="592" height="218" src="https://github.com/to9/embedded-log/blob/master/images/log2.png"/></div>
 
+## How is log used?
+#### 1: Add three files to your project directory
+- log_cfg.h
+- log.h
+- log.c
+
+#### 2: Init log funtcion
+```
+char g_log_buff[512];
+
+void MID_LOG_Put(const char *str)
+{
+	HAL_UART_Send((UINT_8 *)str, strlen(str));
+}
+
+void MID_LOG_Init(void)
+{
+	HAL_UART_Init();
+	log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
+}
+```
+#### 3: Used function
+```
+  LOG_WRN("The file system is not initialized.");
+  LOG_INF("init file system ok.");
+  LOG_ERR("recv data error!");
+  LOG_ASS(g_test_count > 101);
+
+  LOG_INF("get data from queue.");
+  u16DataLen = (u16DataLen > 1024) ? 1024 : u16DataLen;
+  LOG_DBG("Msg recv length: %d", u16DataLen);
+  LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+```
 ## License
 
 [![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/CodeStyle)<br>
