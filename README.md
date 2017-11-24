@@ -21,7 +21,7 @@
 - log.c
 
 #### 2: Init log funtcion
-```
+```c
 char g_log_buff[512];
 
 void MID_LOG_Put(const char *str)
@@ -36,7 +36,7 @@ void MID_LOG_Init(void)
 }
 ```
 #### 3: Used function
-```
+```c
   LOG_WRN("The file system is not initialized.");
   LOG_INF("init file system ok.");
   LOG_ERR("recv data error!");
