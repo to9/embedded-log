@@ -47,6 +47,16 @@ void MID_LOG_Init(void)
   LOG_DBG("Msg recv length: %d", u16DataLen);
   LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
 ```
+## Advanced used
+- log_cfg.h文件配置
+```c
+#define LOG_ENABLE			//关闭日志功能
+#define LOG_CONFIG_LEVEL 4		//设置日志等级
+#define LOG_CONFIG_COLOR		//是否开启彩色输出, 默认开启
+#define LOG_CONFIG_TAGS			//是否输出日志类型标签, 默认输出
+#define LOG_CONFIG_NEWLINE		//是否使用换行符"\n"
+```
+
 ## License
 
 [![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/CodeStyle)<br>
