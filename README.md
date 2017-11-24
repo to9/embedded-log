@@ -4,7 +4,7 @@
 
 ## Description
 
-是一个漂亮的可选彩色输出不级别别嵌入式日志库。
+embedded-log 是一个小巧漂亮的嵌入式日志库。具有彩色输出，也可指定通过usb输出到pc上。使用c语言编写，可用于C51、arm等设备上。
 
 ## View
 - Log serial output:
