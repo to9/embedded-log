@@ -1,6 +1,6 @@
 ## embedded-log
 
-Project use Qt/QML.
+.
 
 ## Description
 
