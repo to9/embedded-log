@@ -47,7 +47,8 @@ void MID_LOG_Init(void)
   LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
 ```
 ## Advanced used
-- log_cfg.h文件配置
+- log_cfg.h File configuration instructions
+
 ```c
 #define LOG_ENABLE			//关闭日志功能
 #define LOG_CONFIG_LEVEL 4		//设置日志等级
