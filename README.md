@@ -13,7 +13,7 @@ embedded-log 是一个小巧漂亮的嵌入式日志库。具有彩色输出，�
 
 <div align=left><img width="592" height="218" src="https://github.com/to9/embedded-log/blob/master/images/log2.png"/></div>
 
-## How is log used?
+## How is embedded-log used?
 #### 1: Add three files to your project directory
 - log_cfg.h
 - log.h
