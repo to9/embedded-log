@@ -35,7 +35,7 @@ void MID_LOG_Init(void)
 	log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
 }
 ```
-- Output to the USB/TFT screen/flash
+- Output to the USB/Screen/flash
 ```c
 void MID_LOG_Put(const char *str)
 {
