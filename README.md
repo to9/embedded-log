@@ -81,6 +81,6 @@ void MID_LOG_Put(const char *str)
 
 ## License
 
-[![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log)<br>
+[![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log/blob/master/LICENSE)<br>
 
 Copyright (c) 2017-present, G.D.
