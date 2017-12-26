@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include "HAL_UART.h"
 
 #if defined(LOG_ENABLE)
 
