@@ -113,11 +113,16 @@ extern int printk_hex(unsigned char *buff, unsigned int count);
 #endif
 
 #if !defined(LOG_CONFIG_DBG_COLOR)
-#define LOG_TAG_DBG_COLOR			LOG_COLOR_LIGHT_GREEN//LOG_COLOR_NONE
-#else
 #define LOG_TAG_DBG_COLOR			LOG_COLOR_LIGHT_GREEN
+#else
+#define LOG_TAG_DBG_COLOR			LOG_COLOR_LIGHT_COLOR
 #endif
 
+#if !defined(LOG_CONFIG_DBG_HEX_COLOR)
+#define LOG_TAG_DBG_HEX_COLOR		LOG_COLOR_NONE
+#else
+#define LOG_TAG_DBG_HEX_COLOR		LOG_COLOR_DBG_HEX_COLOR
+#endif
 
 
 #if !defined(LOG_CONFIG_NEWLINE)
@@ -141,7 +146,6 @@ extern int printk_hex(unsigned char *buff, unsigned int count);
 #endif
 
 
-#define LOG_COLOR0(color) LOG_CALL_TPYE0(color)
 #define LOG_COLOR(tag, tag_color, format, ...) LOG_CALL_TPYE(tag, tag_color, format, ##__VA_ARGS__)
 
 #if (LOG_LEVEL >= LOG_LEVEL_ASSERT)
@@ -168,10 +172,8 @@ extern int printk_hex(unsigned char *buff, unsigned int count);
 #define LOG_DBG(format, ...) LOG_COLOR(LOG_TAG_DBG,	LOG_TAG_DBG_COLOR, format, ##__VA_ARGS__)
 
 #define LOG_DBG_HEX(format, buff, len) { \
-		LOG_COLOR(LOG_TAG_DBG, LOG_TAG_DBG_COLOR, "%s", format); \
-		LOG_COLOR0(LOG_TAG_DBG_COLOR); \
+		LOG_COLOR(LOG_TAG_DBG, LOG_TAG_DBG_HEX_COLOR, "%s", format); \
 		printk_hex(buff, len); \
-		LOG_COLOR0(LOG_COLOR_OFF); \
 	}
 #endif
 
