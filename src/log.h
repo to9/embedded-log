@@ -128,7 +128,7 @@ extern int printk_hex(unsigned char *buff, unsigned int count);
 #if !defined(LOG_CONFIG_NEWLINE)
 #define LOG_NEWLINE ""
 #else
-#define LOG_NEWLINE "\n"
+#define LOG_NEWLINE "\r\n"
 #endif
 
 #if defined(LOG_CONFIG_COLOR)

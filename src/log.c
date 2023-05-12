@@ -98,9 +98,9 @@ int printk_hex(unsigned char *buff, unsigned int count)
 				str_val[index++] = hex[(buff[j + (i << 4)] & 0xf0) >> 4];
 				str_val[index++] = hex[buff[j + (i << 4)] & 0xf];
 				str_val[index++] = ' ';
-				if((buff[j] >= 0x20) && (buff[j] <= 0x7e))
+				if((buff[j + (i << 4)] >= 0x20) && (buff[j + (i << 4)] <= 0x7e))
 				{
-					str[str_index++] = buff[j];
+					str[str_index++] = buff[j + (i << 4)];
 				}
 				else
 				{
@@ -119,6 +119,7 @@ int printk_hex(unsigned char *buff, unsigned int count)
 		str_val[index++] = ' ';
 		memcpy(&str_val[index], str, str_index);
 		index += str_index;
+		str_val[index++] = '\r';
 		str_val[index++] = '\n';
 		str_val[index++] = '\0';
 		log_hook(str_val);
