@@ -82,9 +82,11 @@ void MID_LOG_Put(const char *str)
 
 ## PC Tool
 - SecurtCRT
+  > 注意：不支持彩色日志输出，LOG_CONFIG_COLOR 应该被关闭
 - AccessPort
+  > 注意：不支持彩色日志输出，LOG_CONFIG_COLOR 应该被关闭。
 - MobaXtern
-
+  > 注意：支持彩色日志输出。
 ## License
 
 [![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log/blob/master/LICENSE)<br>
