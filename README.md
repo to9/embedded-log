@@ -66,19 +66,30 @@ void MID_LOG_Put(const char *str)
 ```
 ## Advanced used
 - log_cfg.h file configuration instructions
-
 ```c
-#define LOG_ENABLE			//关闭日志功能
-#define LOG_CONFIG_LEVEL 4		//设置日志等级
+#define LOG_ENABLE			    //关闭日志功能
+#define LOG_CONFIG_LEVEL 4		//设置日志等级可以设置， 默认4为Debug级别输出
 #define LOG_CONFIG_COLOR		//是否开启彩色输出, 默认开启
 #define LOG_CONFIG_TAGS			//是否输出日志类型标签, 默认输出
-#define LOG_CONFIG_NEWLINE		//是否使用换行符"\n"
+#define LOG_CONFIG_NEWLINE		//是否使用换行符"\r\n"
 ```
-## PC Tool
-- SecurtCRT
-- AccessPort
-- MobaXtern
+* 日志输出级别可配置
+  * `LOG_LEVEL_ASSERT 		0`
+  * `LOG_LEVEL_ERROR 		1`
+  * `LOG_LEVEL_WARNING 		2`
+  * `LOG_LEVEL_INFO          3`
+  * `LOG_LEVEL_DEBUG 		4`
 
+## PC Tool
+- **SecurtCRT**
+  
+  > 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭
+- **AccessPort** 
+  
+  > 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭。
+- **MobaXtern**
+  
+  > 支持彩色日志输出。
 ## License
 
 [![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log/blob/master/LICENSE)<br>
