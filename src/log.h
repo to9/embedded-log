@@ -131,16 +131,28 @@ extern int printk_hex(unsigned char *buff, unsigned int count);
 #define LOG_NEWLINE "\r\n"
 #endif
 
+#if !defined(LOG_FILE_FULL_PATH)
+#if !defined(LOG_STRCHR_SYS)
+extern char *strrchr_1(char *string, int ch);
+#define _STRCHR_ strrchr_1
+#else
+#define _STRCHR_ strrchr
+#endif
+#define LOG_FILE_NAME (_STRCHR_((char*)__FILE__, '/') ? _STRCHR_((char*)__FILE__, '/') + 1 : _STRCHR_((char*)__FILE__, '\\') ? _STRCHR_((char*)__FILE__, '\\') + 1 : (char*)__FILE__)
+#else
+#define LOG_FILE_NAME __FILE__
+#endif
+
 #if defined(LOG_CONFIG_COLOR)
 #define LOG_CALL_TPYE(tag, tag_color, format, ...)	\
 	printk("%s%s%s(%d): " format "%s" LOG_NEWLINE,	\
-	       tag_color, tag, __FILE__, __LINE__, ##__VA_ARGS__, LOG_COLOR_OFF)
+	       tag_color, tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, LOG_COLOR_OFF)
 
 #define LOG_CALL_TPYE0(color) printk("%s" color)
 #else
 #define LOG_CALL_TPYE(tag, tag_color, format, ...)	\
 	printk("%s%s%s(%d): " format "%s" LOG_NEWLINE,	\
-	       LOG_COLOR_NONE, tag, __FILE__, __LINE__, ##__VA_ARGS__, LOG_COLOR_NONE)
+	       LOG_COLOR_NONE, tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, LOG_COLOR_NONE)
 
 #define LOG_CALL_TPYE0(color) { ; }
 #endif
