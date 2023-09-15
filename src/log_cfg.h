@@ -37,6 +37,7 @@
 #define LOG_CONFIG_COLOR
 #define LOG_CONFIG_TAGS
 #define LOG_CONFIG_NEWLINE
+//#define LOG_FILE_FULL_PATH
 
 #endif//LOG_CFG_H
 
