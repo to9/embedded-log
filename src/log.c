@@ -61,6 +61,18 @@ int printk(const char *format, ...)
 	return 0;
 }
 
+char *strrchr_1(char *string, int ch)
+{
+	char *start = string;
+	while (*string++)
+		;
+	while (--string != start && *string != ch)
+		;
+	if (*string == ch)
+		return(string);
+	return(NULL);
+}
+
 int printk_hex(unsigned char *buff, unsigned int count)
 {
 	static const char hex[] = "0123456789abcdef";
