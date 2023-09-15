@@ -2,6 +2,7 @@
 [![Travis](https://img.shields.io/badge/release-1.0.0-blue.svg?style=plastic)](https://github.com/to9/embedded-log/releases)
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=plastic)](https://github.com/to9/embedded-log)
 
+```
                  _              _     _          _   _             
                 | |            | |   | |        | | | |            
    ___ _ __ ___ | |__   ___  __| | __| | ___  __| | | | ___   __ _ 
@@ -10,7 +11,7 @@
   \___|_| |_| |_|_.__/ \___|\__,_|\__,_|\___|\__,_| |_|\___/ \__, |
                                                 ______        __/ |
                                                |______|      |___/ 
-
+```
 ## Description
 
 embedded-log 是一个小巧漂亮的嵌入式日志库。具有彩色输出，可指定日志信息输出到串口、屏幕、FLASH或者通过usb输出到pc上。使用c语言编写，可用于C51、arm等设备上。
