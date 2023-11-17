@@ -38,25 +38,21 @@ log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
 
 - Output to the serial port
 ```c
-void MID_LOG_Put(const char *str)
-{
+void MID_LOG_Put(const char *str) {
 	HAL_UART_Send((UINT_8 *)str, strlen(str));
 }
 ```
 - Output to the usb/screen/flash
 ```c
-void MID_LOG_Put(const char *str)
-{
+void MID_LOG_Put(const char *str) {
 	HID_USB_WriteData((UINT_8 *)str, strlen(str));
 }
 
-void MID_LOG_Put(const char *str)
-{
+void MID_LOG_Put(const char *str) {
 	MID_TFT_DisInfo_n((UINT_8 *)str, strlen(str), 0, 0);
 }
 
-void MID_LOG_Put(const char *str)
-{
+void MID_LOG_Put(const char *str) {
 	MID_FlashWrite(0x8000, (UINT_8 *)str, strlen(str));
 }
 ```
