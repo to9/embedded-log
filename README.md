@@ -1,6 +1,5 @@
 ## embedded-log
 [![Travis](https://img.shields.io/badge/release-1.0.0-blue.svg?style=plastic)](https://github.com/to9/embedded-log/releases)
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=plastic)](https://github.com/to9/embedded-log)
 
 ```
                  _              _     _          _   _             
@@ -14,7 +13,7 @@
 ```
 ## Description
 
-embedded-log 是一个小巧漂亮的嵌入式日志库。具有彩色输出，可指定日志信息输出到串口、屏幕、FLASH或者通过usb输出到pc上。使用c语言编写，可用于C51、arm等设备上。
+**`embedded-log`**  is a small and beautiful embedded log library. With color output, log information can be specified to be output to serial port, screen, FLASH, or output to PC through USB. Written in C language, can be used on devices such as C51 and arm.
 
 ## View
 - Log serial output:
@@ -24,25 +23,23 @@ embedded-log 是一个小巧漂亮的嵌入式日志库。具有彩色输出，�
 <div align=left><img width="592" height="218" src="https://github.com/to9/embedded-log/blob/master/images/log2.png"/></div>
 
 ## How is embedded-log used?
-#### 1: Add three files to your project directory
-- log_cfg.h
-- log.h
-- log.c
+#### 1: Add three files to your project
+- `log_cfg.h`, `log.h`, `log.c`
 
 #### 2: Init log funtcion
-- Output to the serial port
+
+You need to define an output buffer (such as 512 bytes). use **`log_init`** Initialize init and pass in the callback function, call the function as the final output of the data, which can be output to the serial port, USB, screen, internal flash, and any other place you want to output.
+
 ```c
 char g_log_buff[512];
+log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
+```
 
+- Output to the serial port
+```c
 void MID_LOG_Put(const char *str)
 {
 	HAL_UART_Send((UINT_8 *)str, strlen(str));
-}
-
-void MID_LOG_Init(void)
-{
-	HAL_UART_Init();
-	log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
 }
 ```
 - Output to the usb/screen/flash
@@ -75,31 +72,34 @@ void MID_LOG_Put(const char *str)
   LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
 ```
 ## Advanced used
-- log_cfg.h file configuration instructions
+
+Modifying configuration files can provide more features such as custom colors, style wrapping, and more.
+
+- log_cfg.h
 ```c
-#define LOG_ENABLE			    //关闭日志功能
-#define LOG_CONFIG_LEVEL 4		//设置日志等级可以设置， 默认4为Debug级别输出
-#define LOG_CONFIG_COLOR		//是否开启彩色输出, 默认开启
-#define LOG_CONFIG_TAGS			//是否输出日志类型标签, 默认输出
-#define LOG_CONFIG_NEWLINE		//是否使用换行符"\r\n"
+#define LOG_ENABLE			// 关闭日志功能
+#define LOG_CONFIG_LEVEL 4		// 设置日志等级可以设置， 默认4为Debug级别输出
+#define LOG_CONFIG_COLOR		// 是否开启彩色输出, 默认开启
+#define LOG_CONFIG_TAGS			// 是否输出日志类型标签, 默认输出
+#define LOG_CONFIG_NEWLINE		// 是否使用换行符"\r\n"
 ```
-* 日志输出级别可配置
+* Configurable log output level
   * `LOG_LEVEL_ASSERT 		0`
   * `LOG_LEVEL_ERROR 		1`
   * `LOG_LEVEL_WARNING 		2`
-  * `LOG_LEVEL_INFO          3`
+  * `LOG_LEVEL_INFO                 3`
   * `LOG_LEVEL_DEBUG 		4`
 
 ## PC Tool
 - **SecurtCRT**
   
-  > 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭
+  📢: 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭
 - **AccessPort** 
   
-  > 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭。
+  📢: 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭。
 - **MobaXtern**
   
-  > 支持彩色日志输出。
+  📢: 支持彩色日志输出。
 ## License
 
 [![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log/blob/master/LICENSE)<br>
