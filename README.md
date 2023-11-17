@@ -96,7 +96,7 @@ Modifying configuration files can provide more features such as custom colors, s
   📢: 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭。
 - **MobaXtern**
   
-  📢: 支持彩色日志输出。
+  支持彩色日志输出。
 ## License
 
 [![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log/blob/master/LICENSE)<br>
