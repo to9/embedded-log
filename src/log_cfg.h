@@ -38,15 +38,23 @@
 #ifndef LOG_CFG_H
 #define LOG_CFG_H
 
+// Disable log output
 // #define LOG_DISABLE
 
+// Enable full path display of file in output as long
 #define LOG_FILE_FULL_PATH
+
+// Enable newline and setting output newline sign
 #define LOG_NEWLINE_ENABLE
 #define LOG_NEWLINE "\r\n"
+
+// Enable log color 
 #define LOG_COLOR_ENABLE
+
+// Enable log tags 
 #define LOG_TAGS_ENABLE
 
-// 自定义颜色
+// Customize log output colors according to log levels，use ANSI Escape Codes in a terminal.
 // #define LOG_ASS_COLOR "\x1B[95m"
 // #define LOG_ERR_COLOR "\x1B[91m"
 // #define LOG_WRN_COLOR "\x1B[93m"

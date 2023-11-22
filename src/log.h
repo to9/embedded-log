@@ -44,6 +44,7 @@
 extern "C" {
 #endif
 
+// software version number
 #define LOG_VERSION "2.0.0"
 
 // 定义日志等级
