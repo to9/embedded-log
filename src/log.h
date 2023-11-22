@@ -1,16 +1,16 @@
 /*************************************************************************************
-**                 _              _     _          _   _             
-**                | |            | |   | |        | | | |            
-**   ___ _ __ ___ | |__   ___  __| | __| | ___  __| | | | ___   __ _ 
+**                 _              _     _          _   _
+**                | |            | |   | |        | | | |
+**   ___ _ __ ___ | |__   ___  __| | __| | ___  __| | | | ___   __ _
 **  / _ \ '_ ` _ \| '_ \ / _ \/ _` |/ _` |/ _ \/ _` | | |/ _ \ / _` |
 ** |  __/ | | | | | |_) |  __/ (_| | (_| |  __/ (_| | | | (_) | (_| |
 **  \___|_| |_| |_|_.__/ \___|\__,_|\__,_|\___|\__,_| |_|\___/ \__, |
 **                                                ______        __/ |
-**                                               |______|      |___/ 
-** 
+**                                               |______|      |___/
+**
 ** Copyright (c) 2017 G.D gaodongzi@126.com
 ** Contact: https://github.com/to9
-** 
+**
 ** This file is part of the log library.
 **
 ** MIT License
@@ -20,10 +20,10 @@
 ** to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 ** copies of the Software, and to permit persons to whom the Software is
 ** furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in all
 ** copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,203 +31,341 @@
 ** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ** SOFTWARE.
-** 
-** 
+**
+**
 *************************************************************************************/
 
 #ifndef LOG_H
 #define LOG_H
 
-#include "log_cfg.h"
+// #include "log_cfg.h"
+#include "location/sensor/include/log_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define LOG_VERSION "1.0.0"
+#define LOG_VERSION "2.0.0"
 
+// 定义日志等级
+typedef enum LOG_LEVEL {
+  LOG_LEVEL_CLOSE = 0,
+  LOG_LEVEL_ASSERT,
+  LOG_LEVEL_ERROR,
+  LOG_LEVEL_WARNING,
+  LOG_LEVEL_INFO,
+  LOG_LEVEL_DEBUG,
+  LOG_LEVEL_VERBOSE
+} LogLevel;
 
-#define LOG_LEVEL_ASSERT 		0
-#define LOG_LEVEL_ERROR 		1
-#define LOG_LEVEL_WARNING 		2
-#define LOG_LEVEL_INFO 			3
-#define LOG_LEVEL_DEBUG 		4
+extern unsigned char g_log_level;
 
-#if !defined(LOG_CONFIG_LEVEL)
-#define LOG_LEVEL LOG_LEVEL_DEBUG
-#else
-#define LOG_LEVEL LOG_CONFIG_LEVEL
-#endif
-
-
-#if defined(LOG_ENABLE)
-extern int printk(const char *format, ...);
+// 定义打印函数和钩子函数
 extern void (*log_hook)(const char *str);
 extern void log_init(char *buff, unsigned int buff_len, void (*hook)(const char *));
-extern int printk_hex(unsigned char *buff, unsigned int count);
+extern void log_set_level(LogLevel level);
 
-#define LOG_COLOR_NONE    		""
-#define LOG_COLOR_OFF     		"\x1B[0m"
-#define LOG_COLOR_RED     		"\x1B[0;31m"
-#define LOG_COLOR_LIGHT_RED     "\x1B[1;31m"
-#define LOG_COLOR_GREEB     	"\x1B[0;32m"
-#define LOG_COLOR_LIGHT_GREEN   "\x1B[1;32m"
-#define LOG_COLOR_YELLOW  		"\x1B[0;33m"
-#define LOG_COLOR_LIGHT_YELLOW  "\x1B[1;33m"
-#define LOG_COLOR_BLUE  		"\x1B[0;34m"
-#define LOG_COLOR_LIGHT_BLUE  	"\x1B[1;34m"
-#define LOG_COLOR_MAGENTA  		"\x1B[0;35m"
-#define LOG_COLOR_LIGHT_MAGENTA	"\x1B[1;35m"
-#define LOG_COLOR_CYAN  		"\x1B[0;36m"
-#define LOG_COLOR_LIGHT_CYAN	"\x1B[1;36m"
+#ifndef LOG_DISABLE
+extern void printk(const char *format, ...);
+extern int printk_hex(unsigned char *buff, unsigned int count, const char *color);
 
-#if defined(LOG_CONFIG_TAGS)
-#define LOG_TAG_ASS				"[ASS] "
-#define LOG_TAG_ERR 			"[ERR] "
-#define LOG_TAG_WRN 			"[WRN] "
-#define LOG_TAG_INF 			"[INF] "
-#define LOG_TAG_DBG 			"[DBG] "
+// font color
+#define LOG_COLOR_NORMAL "\x1B[0m"
+#define LOG_COLOR_BLACK "\x1B[30m"
+#define LOG_COLOR_RED "\x1B[31m"
+#define LOG_COLOR_GREEN "\x1B[32m"
+#define LOG_COLOR_YELLOW "\x1B[33m"
+#define LOG_COLOR_BLUE "\x1B[34m"
+#define LOG_COLOR_MAGENTA "\x1B[35m"
+#define LOG_COLOR_CYAN "\x1B[36m"
+#define LOG_COLOR_WHITE "\x1B[37m"
+#define LOG_COLOR_LIGHT_BLACK "\x1B[90m"
+#define LOG_COLOR_LIGHT_RED "\x1B[91m"
+#define LOG_COLOR_LIGHT_GREEN "\x1B[92m"
+#define LOG_COLOR_LIGHT_YELLOW "\x1B[93m"
+#define LOG_COLOR_LIGHT_BLUE "\x1B[94m"
+#define LOG_COLOR_LIGHT_MAGENTA "\x1B[95m"
+#define LOG_COLOR_LIGHT_CYAN "\x1B[96m"
+#define LOG_COLOR_LIGHT_WHITE "\x1B[97m"
+
+// background color
+#define LOG_COLOR_BACKGROUND_BLACK "\x1B[40m"
+#define LOG_COLOR_BACKGROUND_RED "\x1B[41m"
+#define LOG_COLOR_BACKGROUND_GREEN "\x1B[42m"
+#define LOG_COLOR_BACKGROUND_YELLOW "\x1B[43m"
+#define LOG_COLOR_BACKGROUND_BLUE "\x1B[44m"
+#define LOG_COLOR_BACKGROUND_MAGENTA "\x1B[45m"
+#define LOG_COLOR_BACKGROUND_CYAN "\x1B[46m"
+#define LOG_COLOR_BACKGROUND_WHITE "\x1B[47m"
+#define LOG_COLOR_BACKGROUND_LIGHT_BLACK "\x1B[100m"
+#define LOG_COLOR_BACKGROUND_LIGHT_RED "\x1B[101m"
+#define LOG_COLOR_BACKGROUND_LIGHT_GREEN "\x1B[102m"
+#define LOG_COLOR_BACKGROUND_LIGHT_YELLOW "\x1B[103m"
+#define LOG_COLOR_BACKGROUND_LIGHT_BLUE "\x1B[104m"
+#define LOG_COLOR_BACKGROUND_LIGHT_MAGENTA "\x1B[105m"
+#define LOG_COLOR_BACKGROUND_LIGHT_CYAN "\x1B[106m"
+#define LOG_COLOR_BACKGROUND_LIGHT_WHITE "\x1B[107m"
+
+// 日志标签名字
+#ifdef LOG_TAGS_ENABLE
+#define LOG_TAG_ASS "[ASS] "
+#define LOG_TAG_ERR "[ERR] "
+#define LOG_TAG_WRN "[WRN] "
+#define LOG_TAG_INF "[INF] "
+#define LOG_TAG_DBG "[DBG] "
+#define LOG_TAG_VBS "[VBS] "
 #else
-#define LOG_TAG_ASS 			""
-#define LOG_TAG_ERR 			""
-#define LOG_TAG_WRN 			""
-#define LOG_TAG_INF 			""
-#define LOG_TAG_DBG 			""
+#define LOG_TAG_ASS ""
+#define LOG_TAG_ERR ""
+#define LOG_TAG_WRN ""
+#define LOG_TAG_INF ""
+#define LOG_TAG_DBG ""
+#define LOG_TAG_VBS ""
 #endif
 
-
-#if !defined(LOG_CONFIG_ASS_COLOR)
-#define LOG_TAG_ASS_COLOR			LOG_COLOR_LIGHT_MAGENTA
+// 日志标签颜色
+#ifndef LOG_ASS_COLOR
+#define LOG_TAG_ASS_COLOR LOG_COLOR_LIGHT_MAGENTA
 #else
-#define LOG_TAG_ASS_COLOR			LOG_CONFIG_ASS_COLOR
+#define LOG_TAG_ASS_COLOR LOG_ASS_COLOR
 #endif
 
-#if !defined(LOG_CONFIG_ERR_COLOR)
-#define LOG_TAG_ERR_COLOR			LOG_COLOR_LIGHT_RED
+#ifndef LOG_ERR_COLOR
+#define LOG_TAG_ERR_COLOR LOG_COLOR_LIGHT_RED
 #else
-#define LOG_TAG_ERR_COLOR			LOG_CONFIG_ERR_COLOR
+#define LOG_TAG_ERR_COLOR LOG_ERR_COLOR
 #endif
 
-#if !defined(LOG_CONFIG_WRN_COLOR)
-#define LOG_TAG_WRN_COLOR			LOG_COLOR_LIGHT_YELLOW
+#ifndef LOG_WRN_COLOR
+#define LOG_TAG_WRN_COLOR LOG_COLOR_LIGHT_YELLOW
 #else
-#define LOG_TAG_WRN_COLOR			LOG_CONFIG_WRN_COLOR
+#define LOG_TAG_WRN_COLOR LOG_WRN_COLOR
 #endif
 
-#if !defined(LOG_CONFIG_INF_COLOR)
-#define LOG_TAG_INF_COLOR			LOG_COLOR_LIGHT_BLUE
+#ifndef LOG_INF_COLOR
+#define LOG_TAG_INF_COLOR LOG_COLOR_LIGHT_BLUE
 #else
-#define LOG_TAG_INF_COLOR			LOG_CONFIG_INF_COLOR
+#define LOG_TAG_INF_COLOR LOG_INF_COLOR
 #endif
 
-#if !defined(LOG_CONFIG_DBG_COLOR)
-#define LOG_TAG_DBG_COLOR			LOG_COLOR_LIGHT_GREEN
+#ifndef LOG_DBG_COLOR
+#define LOG_TAG_DBG_COLOR LOG_COLOR_LIGHT_GREEN
 #else
-#define LOG_TAG_DBG_COLOR			LOG_COLOR_LIGHT_COLOR
+#define LOG_TAG_DBG_COLOR LOG_DBG_COLOR
 #endif
 
-#if !defined(LOG_CONFIG_DBG_HEX_COLOR)
-#define LOG_TAG_DBG_HEX_COLOR		LOG_COLOR_NONE
+#ifndef LOG_VBS_COLOR
+#define LOG_TAG_VBS_COLOR LOG_COLOR_LIGHT_CYAN
 #else
-#define LOG_TAG_DBG_HEX_COLOR		LOG_COLOR_DBG_HEX_COLOR
+#define LOG_TAG_VBS_COLOR LOG_VBS_COLOR
 #endif
 
-
-#if !defined(LOG_CONFIG_NEWLINE)
-#define LOG_NEWLINE ""
+#ifndef LOG_ASS_HEX_COLOR
+#define LOG_TAG_ASS_HEX_COLOR LOG_COLOR_LIGHT_MAGENTA
 #else
-#define LOG_NEWLINE "\r\n"
+#define LOG_TAG_ASS_HEX_COLOR LOG_ASS_HEX_COLOR
 #endif
 
-#if !defined(LOG_FILE_FULL_PATH)
-#if !defined(LOG_STRCHR_SYS)
+#ifndef LOG_ERR_HEX_COLOR
+#define LOG_TAG_ERR_HEX_COLOR LOG_COLOR_LIGHT_RED
+#else
+#define LOG_TAG_ERR_HEX_COLOR LOG_ERR_HEX_COLOR
+#endif
+
+#ifndef LOG_WRN_HEX_COLOR
+#define LOG_TAG_WRN_HEX_COLOR LOG_COLOR_LIGHT_YELLOW
+#else
+#define LOG_TAG_WRN_HEX_COLOR LOG_WRN_HEX_COLOR
+#endif
+
+#ifndef LOG_INF_HEX_COLOR
+#define LOG_TAG_INF_HEX_COLOR LOG_COLOR_LIGHT_BLUE
+#else
+#define LOG_TAG_INF_HEX_COLOR LOG_INF_HEX_COLOR
+#endif
+
+#ifndef LOG_DBG_HEX_COLOR
+#define LOG_TAG_DBG_HEX_COLOR LOG_COLOR_LIGHT_GREEN
+#else
+#define LOG_TAG_DBG_HEX_COLOR LOG_DBG_HEX_COLOR
+#endif
+
+#ifndef LOG_VBS_HEX_COLOR
+#define LOG_TAG_VBS_HEX_COLOR LOG_COLOR_LIGHT_CYAN
+#else
+#define LOG_TAG_VBS_HEX_COLOR LOG_VBS_HEX_COLOR
+#endif
+
+// line ending type
+#ifndef LOG_NEWLINE_ENABLE
+#define LOG_NEWLINE_CHAR ""
+#else
+#ifndef LOG_NEWLINE
+#define LOG_NEWLINE_CHAR "\r\n"
+#else
+#define LOG_NEWLINE_CHAR LOG_NEWLINE
+#endif
+#endif
+
+// file name
+#ifndef LOG_FILE_FULL_PATH
+#ifndef LOG_STRCHR_SYS
 extern char *strrchr_1(char *string, int ch);
 #define _STRCHR_ strrchr_1
 #else
 #define _STRCHR_ strrchr
 #endif
-#define LOG_FILE_NAME (_STRCHR_((char*)__FILE__, '/') ? _STRCHR_((char*)__FILE__, '/') + 1 : _STRCHR_((char*)__FILE__, '\\') ? _STRCHR_((char*)__FILE__, '\\') + 1 : (char*)__FILE__)
+#define LOG_FILE_NAME                                                        \
+  (_STRCHR_((char *)__FILE__, '/')    ? _STRCHR_((char *)__FILE__, '/') + 1  \
+   : _STRCHR_((char *)__FILE__, '\\') ? _STRCHR_((char *)__FILE__, '\\') + 1 \
+                                      : (char *)__FILE__)
 #else
 #define LOG_FILE_NAME __FILE__
 #endif
 
-#if defined(LOG_CONFIG_COLOR)
-#define LOG_CALL_TPYE(tag, tag_color, format, ...)	\
-	printk("%s%s%s(%d): " format "%s" LOG_NEWLINE,	\
-	       tag_color, tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, LOG_COLOR_OFF)
+// log color
+#ifdef LOG_COLOR_ENABLE
+#define LOG_CALL_TPYE(tag, tag_color, format, ...) \
+  printk("%s%s%s(%d): " format "%s" LOG_NEWLINE_CHAR, tag_color, tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, LOG_COLOR_NORMAL)
 
-#define LOG_CALL_TPYE0(color) printk("%s" color)
+#define LOG_HEX_CALL_TPYE(data, len, tag_color) printk_hex(data, len, tag_color)
 #else
-#define LOG_CALL_TPYE(tag, tag_color, format, ...)	\
-	printk("%s%s%s(%d): " format "%s" LOG_NEWLINE,	\
-	       LOG_COLOR_NONE, tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, LOG_COLOR_NONE)
+#define LOG_CALL_TPYE(tag, tag_color, format, ...) \
+  printk("%s%s%s(%d): " format "%s" LOG_NEWLINE_CHAR, "", tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, "")
 
-#define LOG_CALL_TPYE0(color) { ; }
+#define LOG_HEX_CALL_TPYE(data, len, tag_color) printk_hex(data, len, NULL)
 #endif
 
+#endif  // LOG_DISABLE
 
-#define LOG_COLOR(tag, tag_color, format, ...) LOG_CALL_TPYE(tag, tag_color, format, ##__VA_ARGS__)
+// ASSERT
+#if !defined(LOG_DISABLE)
+#define LOG_ASS(format, ...)                                                \
+  do {                                                                      \
+    if (g_log_level >= LOG_LEVEL_ASSERT) {                                  \
+      LOG_CALL_TPYE(LOG_TAG_ASS, LOG_TAG_ASS_COLOR, format, ##__VA_ARGS__); \
+    }                                                                       \
+  } while (0)
 
-#if (LOG_LEVEL >= LOG_LEVEL_ASSERT)
-#define LOG_ASS(EX) \
-	if(!(EX)) \
-	{ \
-		LOG_COLOR(LOG_TAG_ASS, LOG_TAG_ASS_COLOR, "assert: '" #EX "' failed"); \
-	}
-#endif
-
-#if (LOG_LEVEL >= LOG_LEVEL_ERROR)
-#define LOG_ERR(format, ...) LOG_COLOR(LOG_TAG_ERR, LOG_TAG_ERR_COLOR, format, ##__VA_ARGS__)
-#endif
-
-#if (LOG_LEVEL >= LOG_LEVEL_WARNING)
-#define LOG_WRN(format, ...) LOG_COLOR(LOG_TAG_WRN,	LOG_TAG_WRN_COLOR, format, ##__VA_ARGS__)
-#endif
-
-#if (LOG_LEVEL >= LOG_LEVEL_INFO)
-#define LOG_INF(format, ...) LOG_COLOR(LOG_TAG_INF,	LOG_TAG_INF_COLOR, format, ##__VA_ARGS__)
-#endif
-
-#if (LOG_LEVEL >= LOG_LEVEL_DEBUG)
-#define LOG_DBG(format, ...) LOG_COLOR(LOG_TAG_DBG,	LOG_TAG_DBG_COLOR, format, ##__VA_ARGS__)
-
-#define LOG_DBG_HEX(format, buff, len) { \
-		LOG_COLOR(LOG_TAG_DBG, LOG_TAG_DBG_HEX_COLOR, "%s", format); \
-		printk_hex(buff, len); \
-	}
-#endif
-
+#define LOG_ASS_HEX(format, buff, len)                                 \
+  do {                                                                 \
+    if (g_log_level >= LOG_LEVEL_ASSERT) {                             \
+      LOG_CALL_TPYE(LOG_TAG_ASS, LOG_TAG_ASS_HEX_COLOR, "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_ASS_HEX_COLOR);             \
+    }                                                                  \
+  } while (0)
 #else
-#define printk(...) { ; }
-#define log_init(...) { ; }
+#define LOG_ASS(...)
+#define LOG_ASS_HEX(...)
 #endif
 
+// ERROR
+#if !defined(LOG_DISABLE)
+#define LOG_ERR(format, ...)                                                \
+  do {                                                                      \
+    if (g_log_level >= LOG_LEVEL_ERROR) {                                   \
+      LOG_CALL_TPYE(LOG_TAG_ERR, LOG_TAG_ERR_COLOR, format, ##__VA_ARGS__); \
+    }                                                                       \
+  } while (0)
 
-#if !defined(LOG_ASS)
-#define LOG_ASS(format, ...) { ; }
+#define LOG_ERR_HEX(format, buff, len)                                 \
+  do {                                                                 \
+    if (g_log_level >= LOG_LEVEL_ERROR) {                              \
+      LOG_CALL_TPYE(LOG_TAG_ERR, LOG_TAG_ERR_HEX_COLOR, "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_ERR_HEX_COLOR);             \
+    }                                                                  \
+  } while (0)
+#else
+#define LOG_ERR(...)
+#define LOG_ERR_HEX(...)
 #endif
 
-#if !defined(LOG_ERR)
-#define LOG_ERR(format, ...) { ; }
+// WARNING
+#if !defined(LOG_DISABLE)
+#define LOG_WRN(format, ...)                                                \
+  do {                                                                      \
+    if (g_log_level >= LOG_LEVEL_WARNING) {                                 \
+      LOG_CALL_TPYE(LOG_TAG_WRN, LOG_TAG_WRN_COLOR, format, ##__VA_ARGS__); \
+    }                                                                       \
+  } while (0)
+
+#define LOG_WRN_HEX(format, buff, len)                                 \
+  do {                                                                 \
+    if (g_log_level >= LOG_LEVEL_WARNING) {                            \
+      LOG_CALL_TPYE(LOG_TAG_WRN, LOG_TAG_WRN_HEX_COLOR, "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_WRN_HEX_COLOR);             \
+    }                                                                  \
+  } while (0)
+#else
+#define LOG_WRN(...)
+#define LOG_WRN_HEX(...)
 #endif
 
-#if !defined(LOG_WRN)
-#define LOG_WRN(format, ...) { ; }
+// INFO
+#if !defined(LOG_DISABLE)
+#define LOG_INF(format, ...)                                                \
+  do {                                                                      \
+    if (g_log_level >= LOG_LEVEL_INFO) {                                    \
+      LOG_CALL_TPYE(LOG_TAG_INF, LOG_TAG_INF_COLOR, format, ##__VA_ARGS__); \
+    }                                                                       \
+  } while (0)
+
+#define LOG_INF_HEX(format, buff, len)                                 \
+  do {                                                                 \
+    if (g_log_level >= LOG_LEVEL_INFO) {                               \
+      LOG_CALL_TPYE(LOG_TAG_INF, LOG_TAG_INF_HEX_COLOR, "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_INF_HEX_COLOR);             \
+    }                                                                  \
+  } while (0)
+#else
+#define LOG_INF(...)
+#define LOG_INF_HEX(...)
 #endif
 
-#if !defined(LOG_INF)
-#define LOG_INF(format, ...) { ; }
+// DEBUG
+#if !defined(LOG_DISABLE)
+#define LOG_DBG(format, ...)                                                \
+  do {                                                                      \
+    if (g_log_level >= LOG_LEVEL_DEBUG) {                                   \
+      LOG_CALL_TPYE(LOG_TAG_DBG, LOG_TAG_DBG_COLOR, format, ##__VA_ARGS__); \
+    }                                                                       \
+  } while (0)
+
+#define LOG_DBG_HEX(format, buff, len)                                 \
+  do {                                                                 \
+    if (g_log_level >= LOG_LEVEL_DEBUG) {                              \
+      LOG_CALL_TPYE(LOG_TAG_DBG, LOG_TAG_DBG_HEX_COLOR, "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_DBG_HEX_COLOR);             \
+    }                                                                  \
+  } while (0)
+#else
+#define LOG_DBG(...)
+#define LOG_DBG_HEX(...)
 #endif
 
-#if !defined(LOG_DBG)
-#define LOG_DBG(format, ...) { ; }
-#define LOG_DBG_HEX(format, buff, len) { ; }
-#endif
+// VERBOSE
+#if !defined(LOG_DISABLE)
+#define LOG_VBS(format, ...)                                                \
+  do {                                                                      \
+    if (g_log_level >= LOG_LEVEL_VERBOSE) {                                 \
+      LOG_CALL_TPYE(LOG_TAG_VBS, LOG_TAG_VBS_COLOR, format, ##__VA_ARGS__); \
+    }                                                                       \
+  } while (0)
 
+#define LOG_VBS_HEX(format, buff, len)                                 \
+  do {                                                                 \
+    if (g_log_level >= LOG_LEVEL_VERBOSE) {                            \
+      LOG_CALL_TPYE(LOG_TAG_VBS, LOG_TAG_VBS_HEX_COLOR, "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_VBS_HEX_COLOR);             \
+    }                                                                  \
+  } while (0)
+#else
+#define LOG_VBS(...)
+#define LOG_VBS_HEX(...)
+#endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif//LOG_H
-
+#endif  // LOG_H
