@@ -119,10 +119,10 @@ Modifying configuration files can provide more features such as custom colors, s
 ## PC Tool
 - **SecurtCRT**
   
-  📢: 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭
+  📢: 不支持彩色日志输出，`LOG_COLOR_ENABLE` 应该被关闭
 - **AccessPort** 
   
-  📢: 不支持彩色日志输出，`LOG_CONFIG_COLOR` 应该被关闭。
+  📢: 不支持彩色日志输出，`LOG_COLOR_ENABLE` 应该被关闭。
 - **MobaXtern**
   
   支持彩色日志输出。
