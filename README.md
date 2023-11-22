@@ -36,6 +36,11 @@ char g_log_buff[512];
 log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
 ```
 
+- dynamic setting of log level， default verbose
+```c
+log_set_level(LOG_LEVEL_ERROR);
+```
+
 - Output to the serial port
 ```c
 void MID_LOG_Put(const char *str) {
@@ -61,12 +66,19 @@ void MID_LOG_Put(const char *str) {
   LOG_WRN("The file system is not initialized.");
   LOG_INF("init file system ok.");
   LOG_ERR("recv data error!");
-  LOG_ASS(g_test_count > 101);
+  LOG_ASS("assert message");
+  LOG_VBS("verbose message");
 
   LOG_INF("get data from queue.");
   u16DataLen = (u16DataLen > 1024) ? 1024 : u16DataLen;
   LOG_DBG("Msg recv length: %d", u16DataLen);
   LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_ASS_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_ERR_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_WRN_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_INF_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_ASS_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);  
 ```
 ## Advanced used
 
@@ -74,18 +86,39 @@ Modifying configuration files can provide more features such as custom colors, s
 
 - log_cfg.h
 ```c
-#define LOG_ENABLE			// 关闭日志功能
-#define LOG_CONFIG_LEVEL 4		// 设置日志等级可以设置， 默认4为Debug级别输出
-#define LOG_CONFIG_COLOR		// 是否开启彩色输出, 默认开启
-#define LOG_CONFIG_TAGS			// 是否输出日志类型标签, 默认输出
-#define LOG_CONFIG_NEWLINE		// 是否使用换行符"\r\n"
+#define LOG_DISABLE			// 关闭日志功能
+#define LOG_COLOR_ENABLE		// 是否开启彩色输出, 默认开启
+#define LOG_TAGS_ENABLE			// 是否输出日志类型标签, 默认输出
+#define LOG_NEWLINE_ENABLE		// 是否使用换行符"\r\n"
+#define LOG_NEWLINE "\r\n"              // 配置输出换行符
 ```
+
 * Configurable log output level
-  * `LOG_LEVEL_ASSERT 		0`
-  * `LOG_LEVEL_ERROR 		1`
-  * `LOG_LEVEL_WARNING 		2`
-  * `LOG_LEVEL_INFO                 3`
-  * `LOG_LEVEL_DEBUG 		4`
+```c
+typedef enum LOG_LEVEL {
+  LOG_LEVEL_CLOSE = 0,
+  LOG_LEVEL_ASSERT,
+  LOG_LEVEL_ERROR,
+  LOG_LEVEL_WARNING,
+  LOG_LEVEL_INFO,
+  LOG_LEVEL_DEBUG,
+  LOG_LEVEL_VERBOSE
+} LogLevel;
+```
+
+- Customize log output colors
+```c
+#define LOG_ASS_COLOR "\x1B[95m"
+#define LOG_ERR_COLOR "\x1B[91m"
+#define LOG_WRN_COLOR "\x1B[93m"
+#define LOG_INF_COLOR "\x1B[94m"
+#define LOG_DBG_COLOR "\x1B[92m"
+#define LOG_ASS_HEX_COLOR "\x1B[95m"
+#define LOG_ERR_HEX_COLOR "\x1B[91m"
+#define LOG_WRN_HEX_COLOR "\x1B[93m"
+#define LOG_INF_HEX_COLOR "\x1B[94m"
+#define LOG_DBG_HEX_COLOR "\x1B[92m"
+```
 
 ## PC Tool
 - **SecurtCRT**
