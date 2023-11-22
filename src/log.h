@@ -38,8 +38,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-// #include "log_cfg.h"
-#include "location/sensor/include/log_cfg.h"
+#include "log_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {
