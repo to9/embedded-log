@@ -37,6 +37,15 @@ log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
 ```
 
 - dynamic setting of log level， default verbose
+
+  > LOG_LEVEL_CLOS  
+  > LOG_LEVEL_ASSERT  
+  > LOG_LEVEL_ERROR    
+  > LOG_LEVEL_WARNING    
+  > LOG_LEVEL_INFO  
+  > LOG_LEVEL_DEBUG    
+  > LOG_LEVEL_VERBOSE   
+  
 ```c
 log_set_level(LOG_LEVEL_ERROR);
 ```
@@ -91,19 +100,6 @@ Modifying configuration files can provide more features such as custom colors, s
 #define LOG_TAGS_ENABLE			// 是否输出日志类型标签, 默认输出
 #define LOG_NEWLINE_ENABLE		// 是否使用换行符"\r\n"
 #define LOG_NEWLINE "\r\n"              // 配置输出换行符
-```
-
-* Configurable log output level
-```c
-typedef enum LOG_LEVEL {
-  LOG_LEVEL_CLOSE = 0,
-  LOG_LEVEL_ASSERT,
-  LOG_LEVEL_ERROR,
-  LOG_LEVEL_WARNING,
-  LOG_LEVEL_INFO,
-  LOG_LEVEL_DEBUG,
-  LOG_LEVEL_VERBOSE
-} LogLevel;
 ```
 
 - Customize log output colors
