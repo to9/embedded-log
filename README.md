@@ -36,7 +36,7 @@ char g_log_buff[512];
 log_init(g_log_buff, sizeof(g_log_buff), MID_LOG_Put);
 ```
 
-- dynamic setting of log level， default verbose
+- Dynamic setting of log level， default verbose
 
   > LOG_LEVEL_CLOS  
   > LOG_LEVEL_ASSERT  
