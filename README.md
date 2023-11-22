@@ -1,6 +1,7 @@
 ## embedded-log
 [![Travis](https://img.shields.io/badge/release-2.0.0-blue.svg?style=plastic)](https://github.com/to9/embedded-log/releases)
 [![Travis](https://img.shields.io/badge/build-passing-brightgreen.svg?style=plastic)](https://github.com/to9/embedded-log/releases)
+[![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log/blob/master/LICENSE)
 
 ```
                  _              _     _          _   _             
@@ -127,7 +128,5 @@ Modifying configuration files can provide more features such as custom colors, s
   
   支持彩色日志输出。
 ## License
-
-[![Crates.io](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](https://github.com/to9/embedded-log/blob/master/LICENSE)<br>
 
 Copyright (c) 2017-present, G.D.
