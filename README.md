@@ -76,7 +76,8 @@ void MID_LOG_Put(const char *str) {
   LOG_WRN("The file system is not initialized.");
   LOG_INF("init file system ok.");
   LOG_ERR("recv data error!");
-  LOG_ASS("assert message");
+  LOG_ASS(sensors == 1);
+  LOG_ASS_MSG(sensors == 1, "assert message: %s, len: %d", buff, sizeof(buff));
   LOG_VBS("verbose message");
 
   LOG_INF("get data from queue.");
@@ -88,7 +89,7 @@ void MID_LOG_Put(const char *str) {
   LOG_WRN_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
   LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
   LOG_INF_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
-  LOG_ASS_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);  
+  LOG_ASS_HEX(sensors == 1, "assert message hex", buff, 32);
 ```
 ## Advanced used
 
