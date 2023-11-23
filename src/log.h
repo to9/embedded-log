@@ -225,13 +225,13 @@ extern char *strrchr_1(char *string, int ch);
 
 // log color
 #ifdef LOG_COLOR_ENABLE
-#define LOG_CALL_TPYE(tag, tag_color, format, ...) \
-  printk("%s%s%s(%d): " format "%s" LOG_NEWLINE_CHAR, tag_color, tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, LOG_COLOR_NORMAL)
+#define LOG_CALL_TPYE(tag, tag_color, msg, format, ...) \
+  printk("%s%s%s(%d): %s" format "%s" LOG_NEWLINE_CHAR, tag_color, tag, LOG_FILE_NAME, __LINE__, msg, ##__VA_ARGS__, LOG_COLOR_NORMAL)
 
 #define LOG_HEX_CALL_TPYE(data, len, tag_color) printk_hex(data, len, tag_color)
 #else
-#define LOG_CALL_TPYE(tag, tag_color, format, ...) \
-  printk("%s%s%s(%d): " format "%s" LOG_NEWLINE_CHAR, "", tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, "")
+#define LOG_CALL_TPYE(tag, tag_color, msg, format, ...) \
+  printk("%s%s%s(%d): " format "%s%s" LOG_NEWLINE_CHAR, "", tag, LOG_FILE_NAME, __LINE__, ##__VA_ARGS__, #msg, "")
 
 #define LOG_HEX_CALL_TPYE(data, len, tag_color) printk_hex(data, len, NULL)
 #endif
@@ -240,20 +240,31 @@ extern char *strrchr_1(char *string, int ch);
 
 // ASSERT
 #if !defined(LOG_DISABLE)
-#define LOG_ASS(format, ...)                                                \
-  do {                                                                      \
-    if (g_log_level >= LOG_LEVEL_ASSERT) {                                  \
-      LOG_CALL_TPYE(LOG_TAG_ASS, LOG_TAG_ASS_COLOR, format, ##__VA_ARGS__); \
-    }                                                                       \
+
+#define LOG_ASS(EX, ...)                                                              \
+  do {                                                                                \
+    if (!(EX)) {                                                                      \
+      LOG_CALL_TPYE(LOG_TAG_ASS, LOG_TAG_ASS_COLOR, "assert: '" #EX "' failed.", ""); \
+    }                                                                                 \
   } while (0)
 
-#define LOG_ASS_HEX(format, buff, len)                                 \
-  do {                                                                 \
-    if (g_log_level >= LOG_LEVEL_ASSERT) {                             \
-      LOG_CALL_TPYE(LOG_TAG_ASS, LOG_TAG_ASS_HEX_COLOR, "%s", format); \
-      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_ASS_HEX_COLOR);             \
-    }                                                                  \
+#define LOG_ASS_MSG(EX, format, ...)                                                                         \
+  do {                                                                                                       \
+    if (!(EX)) {                                                                                             \
+      LOG_CALL_TPYE(LOG_TAG_ASS, LOG_TAG_ASS_COLOR, "assert: '" #EX "' failed. => ", format, ##__VA_ARGS__); \
+    }                                                                                                        \
   } while (0)
+
+#define LOG_ASS_HEX(EX, format, buff, len)                                                        \
+  do {                                                                                            \
+    if (g_log_level >= LOG_LEVEL_ASSERT) {                                                        \
+      if (!(EX)) {                                                                                \
+        LOG_CALL_TPYE(LOG_TAG_ASS, LOG_TAG_ASS_COLOR, "assert: '" #EX "' failed. => %s", format); \
+        LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_ASS_HEX_COLOR);                                      \
+      }                                                                                           \
+    }                                                                                             \
+  } while (0)
+
 #else
 #define LOG_ASS(...)
 #define LOG_ASS_HEX(...)
@@ -261,19 +272,19 @@ extern char *strrchr_1(char *string, int ch);
 
 // ERROR
 #if !defined(LOG_DISABLE)
-#define LOG_ERR(format, ...)                                                \
-  do {                                                                      \
-    if (g_log_level >= LOG_LEVEL_ERROR) {                                   \
-      LOG_CALL_TPYE(LOG_TAG_ERR, LOG_TAG_ERR_COLOR, format, ##__VA_ARGS__); \
-    }                                                                       \
+#define LOG_ERR(format, ...)                                                    \
+  do {                                                                          \
+    if (g_log_level >= LOG_LEVEL_ERROR) {                                       \
+      LOG_CALL_TPYE(LOG_TAG_ERR, LOG_TAG_ERR_COLOR, "", format, ##__VA_ARGS__); \
+    }                                                                           \
   } while (0)
 
-#define LOG_ERR_HEX(format, buff, len)                                 \
-  do {                                                                 \
-    if (g_log_level >= LOG_LEVEL_ERROR) {                              \
-      LOG_CALL_TPYE(LOG_TAG_ERR, LOG_TAG_ERR_HEX_COLOR, "%s", format); \
-      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_ERR_HEX_COLOR);             \
-    }                                                                  \
+#define LOG_ERR_HEX(format, buff, len)                                     \
+  do {                                                                     \
+    if (g_log_level >= LOG_LEVEL_ERROR) {                                  \
+      LOG_CALL_TPYE(LOG_TAG_ERR, LOG_TAG_ERR_HEX_COLOR, "", "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_ERR_HEX_COLOR);                 \
+    }                                                                      \
   } while (0)
 #else
 #define LOG_ERR(...)
@@ -282,19 +293,19 @@ extern char *strrchr_1(char *string, int ch);
 
 // WARNING
 #if !defined(LOG_DISABLE)
-#define LOG_WRN(format, ...)                                                \
-  do {                                                                      \
-    if (g_log_level >= LOG_LEVEL_WARNING) {                                 \
-      LOG_CALL_TPYE(LOG_TAG_WRN, LOG_TAG_WRN_COLOR, format, ##__VA_ARGS__); \
-    }                                                                       \
+#define LOG_WRN(format, ...)                                                    \
+  do {                                                                          \
+    if (g_log_level >= LOG_LEVEL_WARNING) {                                     \
+      LOG_CALL_TPYE(LOG_TAG_WRN, LOG_TAG_WRN_COLOR, "", format, ##__VA_ARGS__); \
+    }                                                                           \
   } while (0)
 
-#define LOG_WRN_HEX(format, buff, len)                                 \
-  do {                                                                 \
-    if (g_log_level >= LOG_LEVEL_WARNING) {                            \
-      LOG_CALL_TPYE(LOG_TAG_WRN, LOG_TAG_WRN_HEX_COLOR, "%s", format); \
-      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_WRN_HEX_COLOR);             \
-    }                                                                  \
+#define LOG_WRN_HEX(format, buff, len)                                     \
+  do {                                                                     \
+    if (g_log_level >= LOG_LEVEL_WARNING) {                                \
+      LOG_CALL_TPYE(LOG_TAG_WRN, LOG_TAG_WRN_HEX_COLOR, "", "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_WRN_HEX_COLOR);                 \
+    }                                                                      \
   } while (0)
 #else
 #define LOG_WRN(...)
@@ -303,19 +314,19 @@ extern char *strrchr_1(char *string, int ch);
 
 // INFO
 #if !defined(LOG_DISABLE)
-#define LOG_INF(format, ...)                                                \
-  do {                                                                      \
-    if (g_log_level >= LOG_LEVEL_INFO) {                                    \
-      LOG_CALL_TPYE(LOG_TAG_INF, LOG_TAG_INF_COLOR, format, ##__VA_ARGS__); \
-    }                                                                       \
+#define LOG_INF(format, ...)                                                    \
+  do {                                                                          \
+    if (g_log_level >= LOG_LEVEL_INFO) {                                        \
+      LOG_CALL_TPYE(LOG_TAG_INF, LOG_TAG_INF_COLOR, "", format, ##__VA_ARGS__); \
+    }                                                                           \
   } while (0)
 
-#define LOG_INF_HEX(format, buff, len)                                 \
-  do {                                                                 \
-    if (g_log_level >= LOG_LEVEL_INFO) {                               \
-      LOG_CALL_TPYE(LOG_TAG_INF, LOG_TAG_INF_HEX_COLOR, "%s", format); \
-      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_INF_HEX_COLOR);             \
-    }                                                                  \
+#define LOG_INF_HEX(format, buff, len)                                     \
+  do {                                                                     \
+    if (g_log_level >= LOG_LEVEL_INFO) {                                   \
+      LOG_CALL_TPYE(LOG_TAG_INF, LOG_TAG_INF_HEX_COLOR, "", "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_INF_HEX_COLOR);                 \
+    }                                                                      \
   } while (0)
 #else
 #define LOG_INF(...)
@@ -324,19 +335,19 @@ extern char *strrchr_1(char *string, int ch);
 
 // DEBUG
 #if !defined(LOG_DISABLE)
-#define LOG_DBG(format, ...)                                                \
-  do {                                                                      \
-    if (g_log_level >= LOG_LEVEL_DEBUG) {                                   \
-      LOG_CALL_TPYE(LOG_TAG_DBG, LOG_TAG_DBG_COLOR, format, ##__VA_ARGS__); \
-    }                                                                       \
+#define LOG_DBG(format, ...)                                                    \
+  do {                                                                          \
+    if (g_log_level >= LOG_LEVEL_DEBUG) {                                       \
+      LOG_CALL_TPYE(LOG_TAG_DBG, LOG_TAG_DBG_COLOR, "", format, ##__VA_ARGS__); \
+    }                                                                           \
   } while (0)
 
-#define LOG_DBG_HEX(format, buff, len)                                 \
-  do {                                                                 \
-    if (g_log_level >= LOG_LEVEL_DEBUG) {                              \
-      LOG_CALL_TPYE(LOG_TAG_DBG, LOG_TAG_DBG_HEX_COLOR, "%s", format); \
-      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_DBG_HEX_COLOR);             \
-    }                                                                  \
+#define LOG_DBG_HEX(format, buff, len)                                     \
+  do {                                                                     \
+    if (g_log_level >= LOG_LEVEL_DEBUG) {                                  \
+      LOG_CALL_TPYE(LOG_TAG_DBG, LOG_TAG_DBG_HEX_COLOR, "", "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_DBG_HEX_COLOR);                 \
+    }                                                                      \
   } while (0)
 #else
 #define LOG_DBG(...)
@@ -345,19 +356,19 @@ extern char *strrchr_1(char *string, int ch);
 
 // VERBOSE
 #if !defined(LOG_DISABLE)
-#define LOG_VBS(format, ...)                                                \
-  do {                                                                      \
-    if (g_log_level >= LOG_LEVEL_VERBOSE) {                                 \
-      LOG_CALL_TPYE(LOG_TAG_VBS, LOG_TAG_VBS_COLOR, format, ##__VA_ARGS__); \
-    }                                                                       \
+#define LOG_VBS(format, ...)                                                    \
+  do {                                                                          \
+    if (g_log_level >= LOG_LEVEL_VERBOSE) {                                     \
+      LOG_CALL_TPYE(LOG_TAG_VBS, LOG_TAG_VBS_COLOR, "", format, ##__VA_ARGS__); \
+    }                                                                           \
   } while (0)
 
-#define LOG_VBS_HEX(format, buff, len)                                 \
-  do {                                                                 \
-    if (g_log_level >= LOG_LEVEL_VERBOSE) {                            \
-      LOG_CALL_TPYE(LOG_TAG_VBS, LOG_TAG_VBS_HEX_COLOR, "%s", format); \
-      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_VBS_HEX_COLOR);             \
-    }                                                                  \
+#define LOG_VBS_HEX(format, buff, len)                                     \
+  do {                                                                     \
+    if (g_log_level >= LOG_LEVEL_VERBOSE) {                                \
+      LOG_CALL_TPYE(LOG_TAG_VBS, LOG_TAG_VBS_HEX_COLOR, "", "%s", format); \
+      LOG_HEX_CALL_TPYE(buff, len, LOG_TAG_VBS_HEX_COLOR);                 \
+    }                                                                      \
   } while (0)
 #else
 #define LOG_VBS(...)
