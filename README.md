@@ -73,23 +73,20 @@ void MID_LOG_Put(const char *str) {
 ```
 #### 3: Used function
 ```c
-  LOG_WRN("The file system is not initialized.");
-  LOG_INF("init file system ok.");
-  LOG_ERR("recv data error!");
   LOG_ASS(sensors == 1);
   LOG_ASS_MSG(sensors == 1, "assert message: %s, len: %d", buff, sizeof(buff));
+  LOG_ERR("recv data error!");
+  LOG_WRN("The file system is not initialized.");
+  LOG_INF("init file system ok.");
+  LOG_DBG("Msg recv length: %d", u16DataLen);
   LOG_VBS("verbose message");
 
-  LOG_INF("get data from queue.");
-  u16DataLen = (u16DataLen > 1024) ? 1024 : u16DataLen;
-  LOG_DBG("Msg recv length: %d", u16DataLen);
-  LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
-  LOG_ASS_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_ASS_HEX(sensors == 1, "assert message hex", buff, 32);
   LOG_ERR_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
   LOG_WRN_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
-  LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
   LOG_INF_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
-  LOG_ASS_HEX(sensors == 1, "assert message hex", buff, 32);
+  LOG_DBG_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
+  LOG_VBS_HEX("BT Msg:", g_BtMsgBufCom, u16DataLen);
 ```
 ## Advanced used
 
